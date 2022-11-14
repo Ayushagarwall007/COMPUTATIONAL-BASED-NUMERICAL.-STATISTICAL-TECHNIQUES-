@@ -1,67 +1,59 @@
-/*
-    Author: Ayush 
+/*   Author: Ayush 
     Title: Bisection Method
-*/
+   Program: Finding real roots of nonlinear
+   equation using Bisection Method*/
+
 
 #include<stdio.h>
+#include<conio.h>
 #include<math.h>
-#define E 2.71828
-#define PI 3.14159265
-#define corr_till 0
-float f(float x){
-    return x*x-3;   //[1,2]
-}
+/*
+ Defining equation to be solved.
+ Change this equation to solve another problem.
+*/
+#define f(x) cos(x) - x * exp(x)
 
-
-int main(){
-    // freopen("in.txt", "r", stdin);
-    // freopen("out.txt", "w", stdout);
-    float a,b;
-    int n, places, count=0;
-    //Input
-    printf("Enter the interval a,b: ");
-    scanf("%f%f", &a, &b);
-    if(f(a)*f(b) > 0 || f(a)*f(b) == 0){
-        printf("Invalid intervals");
-        return 0;
-    }
-
-    #if(corr_till)
-        float prev = f(a);
-        printf("Enter the decimal places: \n");
-        scanf("%d", &places);
-        float till = 0.5 * pow(10.0, -places);
-    #else
-        printf("Enter the number of iterations: \n");
-        scanf("%d", &n);
-    #endif
-    //Bisection
-    while(1){
-        float c = (a+b)/2.0;
-        float fc = f(c);
-        if(fc == 0){
-            printf("Solution found at iteration %d: %f", count+1, c);
-            break;
-        }else if(f(a)*fc < 0){
-            b = c;
-        }else{
-            a = c;
-        }
-        printf("iteration %d: root: %f\t Value: %f\n", count+1, c, fc);
-        #if(corr_till)
-            if(fabs(c - prev) < till){
-                printf("Solution correct till %d decimal places\nroot: %f\n", places, c);
-                break;
-            }
-            prev = fc;
-        #endif
-        
-        count++;
-        #if(corr_till == 0)
-            if(count == n){
-                break;
-            }
-        #endif
-    }
-    
+void main()
+{
+	 float x0, x1, x2, f0, f1, f2, e;
+	 int step = 1;
+	 clrscr();
+	 /* Inputs */
+	 up:
+	 printf("\nEnter two initial guesses:\n");
+	 scanf("%f%f", &x0, &x1);
+	 printf("Enter tolerable error:\n");
+	 scanf("%f", &e);
+	 /* Calculating Functional Value */
+	 f0 = f(x0);
+	 f1 = f(x1);
+	 /* Checking whether given guesses brackets the root or not. */
+	 if( f0 * f1 > 0.0)
+	 {
+		  printf("Incorrect Initial Guesses.\n");
+		  goto up;
+	 }
+   /* Implementing Bisection Method */
+	 printf("\nStep\t\tx0\t\tx1\t\tx2\t\tf(x2)\n");
+	 do
+	 {
+		  x2 = (x0 + x1)/2;
+		  f2 = f(x2);
+		
+		  printf("%d\t\t%f\t%f\t%f\t%f\n",step, x0, x1, x2, f2);
+		
+		  if( f0 * f2 < 0)
+		  {
+			   x1 = x2;
+			   f1 = f2;
+		  }
+		  else
+		  {
+			   x0 = x2;
+			   f0 = f2;
+		  }
+		  step = step + 1;
+	 }while(fabs(f2)>e);
+	 printf("\nRoot is: %f", x2);
+	 getch();
 }
