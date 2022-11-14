@@ -1,0 +1,58 @@
+#include<stdio.h>
+#include<math.h>
+#define EPSILON 0.001
+double func(double x)
+{
+    return x*x*x-x-1;
+}
+double derivarion(double x)
+{
+    return 3*x*x*-1;
+}
+
+void newtonRaphson(double x,int iterate)
+{
+    int count=1;
+    double h=func(x)/derivarion(x);
+    while(count<=iterate)
+    {
+        h=func(x)/derivarion(x);
+        x=x-h;
+        
+        printf("/n the root after %d iterations is %lf \n",count,x);
+        count++;
+    }
+    
+    if(fabs(h)>EPSILON)
+    {
+        printf("after %d iterations , root = %lf \n",iterate,x);
+    }
+}
+
+int main()
+{
+    double a,b,x0;
+    int iterate;
+    printf("enter the interval for the equation \n");
+    scanf("%lf,%lf",&a,&b);
+    if(func(a)*func(b)<0)
+    {
+        if(abs(func(a)-0)>abs(func(b)-0))
+        {
+            x0=a;
+        }
+        else x0=b;
+        
+    }
+    else
+    {
+        printf("you have entered the wrong interval");
+        return 0;
+    }
+    
+    printf("enter the number of iterations you want to perform");
+    scanf("%d",&iterate);
+    
+    newtonRaphson(x0,iterate);
+    return 0;
+}
