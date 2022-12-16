@@ -1,64 +1,54 @@
-/* author - AYUSH AGARWAL
-    TOPIC - REGULAR FALSI
-    */
-    
-    
+//Regula false or false position method
 #include<stdio.h>
-#include<conio.h>
-#define EPSILON 0.00001
-double func(double x)
+#include<math.h>
+#define eps 0.001
+double f(double x)
 {
-    return x*x*x-2*x-2;
+    return x*x*x -4*x-9;
 }
 
-void regularFalsi(double a, double b)
+void Regula(double a,double b)
 {
-    int count =1;
-    int iterate;
-    if(func(a)*func(b)>0) 
+    int count =1,itr;
+    double c,prev;
+    if(f(a)*f(b)>0)
     {
-        printf("You have not assumed the right intervals");
+        printf("Wrong Interval\n");
         return;
     }
     
+    if(f(a)*f(b)==0)
+    {
+        printf("The root of the equation are %lf, %lf\n",a,b);
+        return;
+    }
     
-    printf("enter the number of iterations you want to perform");
-    
-        scanf("%d",&iterate);
-        if(func(a)*func(b)==0)
-        printf("the roots the equation are :%lf,%lf",a,b);
-        else
+    else
+    {
+        printf("Enter the number of iterations\n");
+        scanf("%d",&itr);
+        while(count<=itr)
         {
-            double c,prev;
-            while(count<=iterate)
-            {
-                prev=c;
-                c=(a*func(b)-b*func(a))/(func(b)-func(a));
-                if(func(c)==0) break;
-                printf("\n the root after %d iterations is %lf .\n",count,c);
-                if(func(c)*func(a)<0)
-                b=c;
-                else 
-                a=c;
+            c=prev;
+            c =(a*f(b)-b*f(a))/(f(b)-f(a));
+            if(f(c)==0.0)
+                break;
                 
-                count++;
-            }
-            if(fabs(func(c)-func(prev))>EPSILON)
-            {
-                printf("the value of the root is %lf",c);
-            }
+            printf("The root after %d iterations is %lf\n",count,c);
+            if(f(c)*f(a)<0)
+                b=c;
+            else
+                a=c;
+            
+            count++;
         }
-        
-    
+        if((f(c)-f(prev))>=eps)
+        {
+            printf("The root value is %lf",c);
+        }
+    }
 }
-
 int main()
 {
-    double a,b;
-    
-    printf("Enter the interval for the equation");
-    scanf("%lf%lf",&a,&b);
-    
-    regularFalsi(a,b);
-    return 0;
+    Regula(2,4);
 }
